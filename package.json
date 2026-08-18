@@ -1,7 +1,7 @@
 {
   "name": "dsh-hermes-bridge",
-  "version": "0.0.1",
-  "description": "DSH ↔ 微信双向桥（M0：出站推送）。把 daily-pulse 等 DSH 任务的完成通知经 hermes send 推送到微信，零 LLM 消耗。",
+  "version": "0.1.0",
+  "description": "DSH ↔ WeChat bridge: inbound dispatch (WeChat → DSH agent, persistent per-cwd session pool) + outbound push (task progress → WeChat via hermes send, zero-LLM). 微信 ↔ DSH 双向桥：入站调度 + 出站推送，常驻会话复用。",
   "type": "module",
   "main": "lib/index.js",
   "files": [
@@ -15,8 +15,18 @@
     "wechat",
     "hermes-agent",
     "notify",
-    "cordis"
+    "bridge",
+    "cordis",
+    "ai-agent"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsh-pulse/dsh-hermes-bridge.git"
+  },
+  "homepage": "https://github.com/dsh-pulse/dsh-hermes-bridge#readme",
+  "bugs": {
+    "url": "https://github.com/dsh-pulse/dsh-hermes-bridge/issues"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.yml"
