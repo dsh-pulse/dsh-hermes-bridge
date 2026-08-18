@@ -4,7 +4,7 @@
 # token 用 !!js 表达式从环境变量读取，不写死在 YAML（cordis-plugin-loader 支持 !js eval）。
 - insert:
     - id: hermes-bridge
-      name: '/home/superzealot/dsh-hermes-bridge/lib/index.js'
+      name: '@dsh-pulse/dsh-hermes-bridge'
       config:
         port: 8643
         authToken: '!!js ${env.DSH_BRIDGE_TOKEN}'

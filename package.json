@@ -1,5 +1,5 @@
 {
-  "name": "dsh-hermes-bridge",
+  "name": "@dsh-pulse/dsh-hermes-bridge",
   "version": "0.1.0",
   "description": "DSH ↔ WeChat bridge: inbound dispatch (WeChat → DSH agent, persistent per-cwd session pool) + outbound push (task progress → WeChat via hermes send, zero-LLM). 微信 ↔ DSH 双向桥：入站调度 + 出站推送，常驻会话复用。",
   "type": "module",
