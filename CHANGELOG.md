@@ -26,3 +26,5 @@
 
 - 纳入 M0/M1 隔离测试（含 Node 18 全局 Web Crypto 垫片），新增 `npm test` 脚本与 GitHub Actions 测试工作流。
 - Track M0/M1 isolated tests (with a Node 18 global Web Crypto shim), add `npm test` script and a GitHub Actions test workflow.
+- 修复测试对本机 hermes 路径的依赖：改用假 hermes stub（延迟失败），重试断言在 CI 上确定成立。
+- Fix the tests' dependence on a machine-local hermes path: a fake hermes stub (delayed failure) makes the retry assertion deterministic on CI.

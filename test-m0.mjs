@@ -16,6 +16,17 @@ import { apply, redact } from './lib/index.js'
 import { webcrypto } from 'node:crypto'
 if (!globalThis.crypto) globalThis.crypto = webcrypto
 
+// 假 hermes stub：模拟 `hermes send` 失败（延迟 500ms 后退出码 1）。
+// 本机真实 hermes 只在开发机存在，CI 上没有 —— 用 stub 让「重试耗时 >800ms」断言在任何机器上确定成立。
+import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
+
+const stubDir = mkdtempSync(join(tmpdir(), 'hermes-stub-'))
+const stubBin = join(stubDir, 'hermes')
+writeFileSync(stubBin, '#!/bin/sh\nsleep 0.5\necho "fake hermes: send failed (stub)" >&2\nexit 1\n')
+chmodSync(stubBin, 0o755)
+
 // mock ctx（cordis 最小面）
 const ctx = {
   _cleanup: null,
@@ -33,7 +44,7 @@ await apply(ctx, {
   port: PORT,
   authToken: TOKEN,
   pushTarget: 'weixin:fake-target@im.wechat',
-  hermesBin: '/home/superzealot/.hermes/hermes-agent/venv/bin/hermes',
+  hermesBin: stubBin,
   retries: 1,
 })
 await new Promise((r) => setTimeout(r, 500))
@@ -86,5 +97,6 @@ check('credentials 路径被脱敏', !r2.includes('.credentials.yaml') && r2.inc
 
 // 清理
 ctx._cleanup?.()
+rmSync(stubDir, { recursive: true, force: true })
 console.log(`\n结果: ${pass} 通过, ${fail} 失败`)
 process.exit(fail ? 1 : 0)
