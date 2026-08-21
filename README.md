@@ -1,6 +1,8 @@
 # dsh-hermes-bridge
 
-DSH ↔ WeChat bridge plugin: **inbound dispatch (WeChat → DSH agent) + outbound push (DSH → WeChat)**, powered by the [Hermes](https://github.com/) gateway as the WeChat transport. Zero-LLM outbound push via `hermes send`, and a persistent per-cwd session pool that reuses DSH agent sessions (15–20× cheaper than one-shot headless invocations).
+DSH ↔ WeChat bridge plugin: **inbound dispatch (WeChat → DSH agent) + outbound push (DSH → WeChat)**, powered by the [Hermes](https://github.com/NousResearch/hermes-agent) gateway as the WeChat transport. Zero-LLM outbound push via `hermes send`, and a persistent per-cwd session pool that reuses DSH agent sessions (15–20× cheaper than one-shot headless invocations).
+
+> **Scope**: this plugin is a task-queue execution endpoint for DSH — it does **not** implement the WeChat protocol itself. The WeChat side (both the inbound trigger and the transport) comes from a **self-deployed Hermes Agent gateway** plus your own inbound script; without those, the WeChat half of the chain will not work.
 
 微信 ↔ DSH 双向桥插件：入站调度（微信消息 → DSH agent 执行）+ 出站推送（任务进度/结果 → 微信）。出站走 `hermes send` 零 LLM 消耗；按工作目录复用常驻会话，比一次性 headless 调用省 15–20× token。
 
@@ -55,7 +57,13 @@ Developed and verified on **one specific machine** (see the deployment notes in 
 
 ## Install
 
-From GitHub (npm publish pending — package name reserved as `@dsh-pulse/dsh-hermes-bridge`):
+From npm (published as `@dsh-pulse/dsh-hermes-bridge`):
+
+```bash
+dsh plugin --profile web add @dsh-pulse/dsh-hermes-bridge
+```
+
+Or from GitHub:
 
 ```bash
 git clone https://github.com/dsh-pulse/dsh-hermes-bridge.git

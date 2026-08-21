@@ -1,6 +1,8 @@
 # dsh-hermes-bridge
 
-DSH ↔ 微信双向桥插件：**入站调度（微信消息 → DSH agent 执行）+ 出站推送（任务进度/结果 → 微信）**，微信通道由 [Hermes](https://github.com/) gateway 承载。出站走 `hermes send` 零 LLM 消耗；按工作目录复用常驻会话，比一次性 headless 调用省 15–20× token。
+DSH ↔ 微信双向桥插件：**入站调度（微信消息 → DSH agent 执行）+ 出站推送（任务进度/结果 → 微信）**，微信通道由 [Hermes](https://github.com/NousResearch/hermes-agent) gateway 承载。出站走 `hermes send` 零 LLM 消耗；按工作目录复用常驻会话，比一次性 headless 调用省 15–20× token。
+
+> **插件边界**：本插件是 DSH 的**任务队列执行端点**——它**不实现微信协议本身**。微信侧（入站触发与传输）依赖**自部署的 Hermes Agent gateway** 加你自己的入站脚本；没有这些，微信那一半链路不会工作。
 
 > **⚠️ 使用前必读——环境假设。** 本插件是基于**开发者本人的一套特定环境**开发验证的（见「环境假设」章节）。DSH 与 Hermes 的部署方式千奇百怪，本插件**无法**开箱即用于所有环境。请先逐条核对假设并适配你的配置，再期望它跑起来。
 
@@ -51,7 +53,13 @@ DSH ↔ 微信双向桥插件：**入站调度（微信消息 → DSH agent 执�
 
 ## 安装
 
-从 GitHub 分发（npm 发布暂缓，包名已预留 `@dsh-pulse/dsh-hermes-bridge`）：
+从 npm 安装（已发布 `@dsh-pulse/dsh-hermes-bridge`）：
+
+```bash
+dsh plugin --profile web add @dsh-pulse/dsh-hermes-bridge
+```
+
+或从 GitHub 分发：
 
 ```bash
 git clone https://github.com/dsh-pulse/dsh-hermes-bridge.git
